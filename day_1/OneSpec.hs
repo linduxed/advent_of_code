@@ -7,10 +7,10 @@ main = hspec $ do
         it "returns 0 on an empty string" $ do
             finalFloor "" `shouldBe` 0
 
-        it "returns 1 for one right paren" $ do
+        it "returns -1 for one right paren" $ do
             finalFloor ")" `shouldBe` (-1)
 
-        it "returns -1 for one left paren" $ do
+        it "returns 1 for one left paren" $ do
             finalFloor "(" `shouldBe` 1
 
         it "returns 0 for '()'" $ do
