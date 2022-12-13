@@ -1,18 +1,7 @@
 defmodule AdventOfCode2022 do
-  @moduledoc """
-  Documentation for `AdventOfCode2022`.
-  """
-
-  @doc """
-  Hello world.
-
-  ## Examples
-
-      iex> AdventOfCode2022.hello()
-      :world
-
-  """
-  def hello do
-    :world
+  def read_input_for_day(day_number) do
+    "input/day_#{day_number}.txt"
+    |> File.read!()
+    |> String.split("\n", trim: true)
   end
 end
