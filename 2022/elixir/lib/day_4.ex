@@ -31,27 +31,21 @@ defmodule AdventOfCode2022.Day4 do
   end
 
   defp sets_contain_contained_sets?(sets) do
-    sets_with_indices = Enum.with_index(sets)
-
-    subsets =
-      for {set_a, a} <- sets_with_indices,
-          {set_b, b} <- sets_with_indices,
-          a != b,
-          MapSet.subset?(set_a, set_b) do
-        set_a
-      end
-
-    Enum.count(subsets) > 0
+    sets_contain_sets_by?(sets, &MapSet.subset?/2)
   end
 
   defp sets_contain_overlapping_sets?(sets) do
+    sets_contain_sets_by?(sets, &(not MapSet.disjoint?(&1, &2)))
+  end
+
+  defp sets_contain_sets_by?(sets, filter_fun) do
     sets_with_indices = Enum.with_index(sets)
 
     subsets =
       for {set_a, a} <- sets_with_indices,
           {set_b, b} <- sets_with_indices,
           a != b,
-          not MapSet.disjoint?(set_a, set_b) do
+          filter_fun.(set_a, set_b) do
         set_a
       end
 
