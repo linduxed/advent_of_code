@@ -1,4 +1,52 @@
+defmodule AdventOfCode2022.Day3.LetterPriorities do
+  def priorities(letter_case)
+      when letter_case in [:lowercase, :uppercase] do
+    letters = letters_for_case(letter_case)
+    number_range = number_range_for_case(letter_case)
+
+    Enum.zip(letters, number_range)
+  end
+
+  defp letters_for_case(letter_case)
+       when letter_case in [:lowercase, :uppercase] do
+    letter_case
+    |> range_for_letter_case()
+    |> char_range_to_letter_strings()
+  end
+
+  defp number_range_for_case(:lowercase), do: 1..26
+  defp number_range_for_case(:uppercase), do: 27..52
+
+  defp char_range_to_letter_strings(char_range) do
+    IO.puts("In MACRO function")
+
+    char_range
+    |> Enum.to_list()
+    |> List.to_string()
+    |> String.codepoints()
+  end
+
+  defp range_for_letter_case(:lowercase), do: ?a..?z
+  defp range_for_letter_case(:uppercase), do: ?A..?Z
+
+  defmacro priority_map do
+    quote do
+      alias AdventOfCode2022.Day3.LetterPriorities
+
+      lowercase_priorities = LetterPriorities.priorities(:lowercase)
+      uppercase_priorities = LetterPriorities.priorities(:uppercase)
+
+      Enum.into(lowercase_priorities ++ uppercase_priorities, %{})
+    end
+  end
+end
+
 defmodule AdventOfCode2022.Day3 do
+  alias __MODULE__.LetterPriorities
+  require LetterPriorities
+
+  @priority_map LetterPriorities.priority_map()
+
   def part_1(lines) do
     lines
     |> Enum.map(&string_to_2_compartment_rucksack/1)
@@ -44,22 +92,6 @@ defmodule AdventOfCode2022.Day3 do
   end
 
   defp common_item_to_priority(item) do
-    Map.fetch!(priority_map(), item)
-  end
-
-  defp priority_map() do
-    lowercase_letters = char_range_to_letter_strings(?a..?z)
-    uppercase_letters = char_range_to_letter_strings(?A..?Z)
-    lowercase_priorities = Enum.zip(lowercase_letters, 1..26)
-    uppercase_priorities = Enum.zip(uppercase_letters, 27..52)
-
-    Enum.into(lowercase_priorities ++ uppercase_priorities, %{})
-  end
-
-  defp char_range_to_letter_strings(char_range) do
-    char_range
-    |> Enum.to_list()
-    |> List.to_string()
-    |> String.codepoints()
+    Map.fetch!(@priority_map, item)
   end
 end
