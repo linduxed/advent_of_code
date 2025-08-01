@@ -21,7 +21,7 @@ defmodule AdventOfCode2015.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:stream_data, "~> 0.5.0"}
+      {:stream_data, "~> 1.0"}
     ]
   end
 end
